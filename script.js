@@ -13,3 +13,24 @@ function debounce(func, wait = 20, immediate = true) {
         if (callNow) func.apply(context, args);
     };
 }
+
+const sliderImages = document.querySelectorAll(".slide-in");
+
+window.addEventListener("scroll", debounce(checkSlide));
+
+function checkSlide(e) {
+    sliderImages.forEach(sliderImage => {
+        // half wayt through the image
+        const slideInAt =
+            window.scrollY + window.innerHeight - sliderImage.height / 2; // will give us where the px level where we currently are at the bottom
+        // bottom of the image
+        const imageBottom = sliderImage.offsetTop + sliderImage.height;
+        const isHalfShown = slideInAt > sliderImage.offsetTop;
+        const isNotScolledPast = window.screenY < imageBottom;
+        if (isHalfShown && isNotScolledPast) {
+            sliderImage.classList.add("active");
+        } else {
+            sliderImage.classList.remove("active");
+        }
+    });
+}
